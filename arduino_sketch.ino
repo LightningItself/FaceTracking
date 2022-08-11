@@ -9,6 +9,11 @@
  * - WA6:125 -> Writes 125 to analog output pin 6 (PWM)
  */
 
+// #include <Servo.h>
+
+// Servo x;
+// Servo y;
+
 char operation; // Holds operation (R, W, ...)
 char mode; // Holds the mode (D, A)
 int pin_number; // Holds the pin number
@@ -16,6 +21,7 @@ int digital_value; // Holds the digital value
 int analog_value; // Holds the analog value
 int value_to_write; // Holds the value that we want to write
 int wait_for_transmission = 5; // Delay in ms in order to receive the serial data
+
 
 void set_pin_mode(int pin_number, char mode){
     /*
@@ -81,10 +87,13 @@ void analog_write(int pin_number, int analog_value){
   analogWrite(pin_number, analog_value);
 }
 
+
 void setup() {
     Serial.begin(9600); // Serial Port at 9600 baud
     Serial.setTimeout(100); // Instead of the default 1000ms, in order
-                            // to speed up the Serial.parseInt() 
+    // x.attach(9);
+    // y.attach(10);
+
 }
 
 void loop() {
@@ -103,9 +112,9 @@ void loop() {
                     digital_read(pin_number);
                 } else if (mode == 'A'){ // Analog read
                     analog_read(pin_number);
-        } else {
-          break; // Unexpected mode
-        }
+                } else {
+                break; // Unexpected mode
+                }
                 break;
 
             case 'W': // Write operation, e.g. WD3:1, WA8:255
@@ -121,6 +130,17 @@ void loop() {
             case 'M': // Pin mode, e.g. MI3, MO3, MP3
                 set_pin_mode(pin_number, mode); // Mode contains I, O or P (INPUT, OUTPUT or PULLUP_INPUT)
                 break;
+
+            // case 'S': // Servo e.g. SA9 SB
+            //     if (mode == 'A'){
+            //         x.write(set_pin_mode);
+
+            //     } else if (mode == 'B'){
+                    
+            //     } else {
+            //     break; // Unexpected mode
+            //     }
+
 
             default: // Unexpected char
                 break;
